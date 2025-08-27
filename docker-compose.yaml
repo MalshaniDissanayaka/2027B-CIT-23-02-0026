@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  todo-web:
+    build: ./app
+    ports:
+      - "5000:5000"
+    environment:
+      DB_HOST: todo-db
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: todo
+    depends_on:
+      - todo-db
+
+  todo-db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: todo
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - todo-db-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+volumes:
+  todo-db-data:
